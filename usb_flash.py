@@ -12,18 +12,16 @@ parser.add_argument("--board", help="Only flash one class of board")
 parser.add_argument("--device", help="Only one specific device, given by bus:addr or SR partcode")
 
 def discover_sr_devices(usb, conf):
-    vidpid_list = []
+    vidpid_map = dict()
     for x in conf:
-        vidpid_list.append( (conf[x]['VID'], conf[x]['PID']) )
-
-    vidpid_list = [(int(a), int(b)) for a,b in vidpid_list]
+        vidpid_map[(int(conf[x]['VID']), int(conf[x]['PID']))] = conf[x]
 
     devices = []
     for dev in ctx.getDeviceList():
         vid = dev.getVendorID()
         pid = dev.getProductID()
-        if (vid,pid) in vidpid_list:
-            devices.append(dev)
+        if (vid,pid) in vidpid_map:
+            devices.append( (dev, vidpid_map[(vid,pid)]) )
 
     return devices
 
