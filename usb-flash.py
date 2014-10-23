@@ -3,6 +3,7 @@
 import sys
 import usb1
 import argparse
+import yaml
 
 parser = argparse.ArgumentParser(description="SR USB board flash utility")
 parser.add_argument("conffile", help="Firmware configuration file")
@@ -12,4 +13,6 @@ parser.add_argument("--device", help="Only one specific device, given by bus:add
 
 if __name__ == "__main__":
     print "Shoes"
-    sys.exit(1)
+    args = parser.parse_args()
+    ctx = usb1.USBContext()
+    conf = yaml.load(args.conffile)
