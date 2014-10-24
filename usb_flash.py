@@ -99,10 +99,13 @@ def maybe_flash_board(ctx, path, dev, conf, force):
 
 if __name__ == "__main__":
     args = parser.parse_args()
+    # Open USB context
     ctx = usb1.USBContext()
+    # Suck in our configuration
     with open(args.conffile) as f:
         conf = yaml.load(f)
 
+    # Discover what is attached
     device_list = discover_sr_devices(ctx, conf)
 
     if len(device_list) == 0:
@@ -117,6 +120,7 @@ if __name__ == "__main__":
         print >>sys.stderr, "No SR USB boards matching board-type filter"
         sys.exit(0)
 
+    # Second, if we're looking for a specific device, filter for it
     if args.device != None:
         device_list = filter_for_device(device_list, args.device)
 
@@ -126,6 +130,7 @@ if __name__ == "__main__":
 
     # We're now left with a list of devices to potentially flash. Fetch a port
     # path to each, then consider whether to flash it.
+    # XXX, port path stuff is borked.
     for dev, conf in device_list:
         path = get_device_path(ctx, dev)
         maybe_flash_board(ctx, path, dev, conf, args.force)
