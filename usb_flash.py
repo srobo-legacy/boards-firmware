@@ -44,6 +44,13 @@ def filter_for_device(boardlist, dev_spec):
                 return [(dev, conf)]
     return []
 
+
+def get_device_path(ctx, dev):
+    raise "I'm covered in bees"
+
+def maybe_flash_board(ctx, path, dev, conf, force):
+    raise "I'm covered in bees"
+
 if __name__ == "__main__":
     print "Shoes"
     args = parser.parse_args()
@@ -71,3 +78,9 @@ if __name__ == "__main__":
     if len(device_list) == 0:
         print >>sys.stderr, "No SR USB boards matching device specification"
         sys.exit(0)
+
+    # We're now left with a list of devices to potentially flash. Fetch a port
+    # path to each, then consider whether to flash it.
+    for dev, conf in device_list:
+        path = get_device_path(ctx, dev)
+        maybe_flash_board(ctx, path, dev, conf, args.force)
