@@ -46,7 +46,8 @@ def filter_for_device(boardlist, dev_spec):
 
 
 def get_device_path(ctx, dev):
-    raise "I'm covered in bees"
+    """ Right now, this does nothing, because libusb is a world of pain"""
+    return ""
 
 def maybe_flash_board(ctx, path, dev, conf, force):
     raise "I'm covered in bees"
