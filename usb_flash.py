@@ -31,4 +31,17 @@ if __name__ == "__main__":
     ctx = usb1.USBContext()
     with open(args.conffile) as f:
         conf = yaml.load(f)
-    discover_sr_devices(ctx, conf)
+
+    device_list = discover_sr_devices(ctx, conf)
+
+    if len(device_list) == 0:
+        print >>sys.stderr, "No SR USB boards attached"
+        sys.exit(0)
+
+    # First, filter for boards if the --board option is given
+    if args.board != None:
+        device_list = [(dev,conf) for (dev,conf) in device_list if conf['name'] == args.board]
+
+    if len(device_list) == 0:
+        print >>sys.stderr, "No SR USB boards matching board-type filter"
+        sys.exit(0)
