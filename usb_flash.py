@@ -112,6 +112,13 @@ if __name__ == "__main__":
         print "No SR USB boards attached"
         sys.exit(0)
 
+    # Print some diagnostics
+    print "Found the following SR USB devices attached"
+    for dev, conf in device_list:
+        busnum = dev.getBusNumber()
+        devnum = dev.getDeviceAddress()
+        print "{0}:{1}\t\"{2}\"\t{3}".format(busnum, devnum, dev.getProduct(), dev.getSerialNumber())
+
     # First, filter for boards if the --board option is given
     if args.board != None:
         device_list = filter_for_board_class(device_list, args.board)
