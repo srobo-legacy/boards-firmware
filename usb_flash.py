@@ -66,8 +66,7 @@ def maybe_flash_board(ctx, path, dev, conf, force):
     # Definitely flash board. Invoke dfu-util
     vidhex = format(int(conf['VID']), '04x')
     pidhex = format(int(conf['PID']), '04x')
-    p = subprocess.check_call(("dfu-util", "-d", "{0}:{1}".format(vidhex,pidhex), "-D", conf['fw_path']))
-    p.wait()
+    subprocess.check_call(("dfu-util", "-d", "{0}:{1}".format(vidhex,pidhex), "-D", conf['fw_path']))
     return
 
 if __name__ == "__main__":
