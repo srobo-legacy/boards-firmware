@@ -96,6 +96,8 @@ def maybe_flash_board(ctx, path, dev, conf, force):
         return
 
     # Definitely flash board. Invoke dfu-util
+    busnum, devnum = get_bus_addr_pair(dev)
+    print "Flashing {0}:{1} {2} board with fw_ver {3}, to fw_ver {4}".format(busnum, devnum, conf['name'], board_fw_ver, file_fw_ver)
 
     vidhex = format(int(conf['VID']), '04x')
     pidhex = format(int(conf['PID']), '04x')
