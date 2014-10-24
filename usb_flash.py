@@ -12,6 +12,11 @@ parser.add_argument("--force", help="Force flashing of attached boards")
 parser.add_argument("--board", help="Only flash one class of board")
 parser.add_argument("--device", help="Only one specific device, given by bus:addr or SR partcode")
 
+def get_bus_addr_pair(dev):
+    busnum = dev.getBusNumber()
+    devnum = dev.getDeviceAddress()
+    return (busnum, devnum)
+
 def discover_sr_devices(usb, conf):
     """
     Given a USB context and a configuration yaml object, search through all
@@ -86,12 +91,12 @@ def maybe_flash_board(ctx, path, dev, conf, force):
 
     # Don't flash if the fw version matches, and we are not forcing
     if board_fw_ver == file_fw_ver and force != True:
-        busnum = dev.getBusNumber()
-        devnum = dev.getDeviceAddress()
+        busnum, devnum = get_bus_addr_pair(dev)
         print "Skipping device {0}:{1} with matching fw ver".format(busnum, devnum)
         return
 
     # Definitely flash board. Invoke dfu-util
+
     vidhex = format(int(conf['VID']), '04x')
     pidhex = format(int(conf['PID']), '04x')
     subprocess.check_call(("dfu-util", "-d", "{0}:{1}".format(vidhex,pidhex), "-D", conf['fw_path']))
@@ -115,8 +120,7 @@ if __name__ == "__main__":
     # Print some diagnostics
     print "Found the following SR USB devices attached"
     for dev, conf in device_list:
-        busnum = dev.getBusNumber()
-        devnum = dev.getDeviceAddress()
+        busnum, devnum = get_bus_addr_pair(dev)
         print "{0}:{1}\t\"{2}\"\t{3}".format(busnum, devnum, dev.getProduct(), dev.getSerialNumber())
 
     # First, filter for boards if the --board option is given
