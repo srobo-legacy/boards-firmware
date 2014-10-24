@@ -4,6 +4,7 @@ import sys
 import usb1
 import argparse
 import yaml
+import subprocess
 
 parser = argparse.ArgumentParser(description="SR USB board flash utility")
 parser.add_argument("conffile", help="Firmware configuration file")
@@ -50,7 +51,24 @@ def get_device_path(ctx, dev):
     return ""
 
 def maybe_flash_board(ctx, path, dev, conf, force):
-    raise "I'm covered in bees"
+    # For now, ignore the path.
+    # So. What version is on the board? Look at the lower byte of rev num
+    board_fw_ver = dev.getbcdDevice() % 256
+    file_fw_ver = int(conf['fw_ver'])
+
+    # Flash if the versions mismatch, at all. Also if the force flag is given.
+    if board_fw_ver == file_fw_ver and force != True:
+        busnum = dev.getBusNumber()
+        devnum = dev.getDeviceAddress()
+        print >>sys.stderr, "Skipping device {0}:{1} with matching fw ver".format(busnum, devnum)
+        return
+
+    # Definitely flash board. Invoke dfu-util
+    vidhex = format(int(conf['VID']), '04x')
+    pidhex = format(int(conf['PID']), '04x')
+    p = subprocess.check_call(("dfu-util", "-d", "{0}:{1}".format(vidhex,pidhex), "-D", conf['fw_path']))
+    p.wait()
+    return
 
 if __name__ == "__main__":
     print "Shoes"
