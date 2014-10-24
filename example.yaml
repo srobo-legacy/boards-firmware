@@ -10,4 +10,4 @@ servo:
   VID: 0x1bda
   PID: 0x0011
   fw_path: ./servo_noboot.bin
-  fw_far: 0
+  fw_ver: 0
