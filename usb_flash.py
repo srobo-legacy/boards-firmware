@@ -36,12 +36,13 @@ def filter_for_device(boardlist, dev_spec):
         addr = int(parts[1])
         for dev, conf in boardlist:
             if dev.getBusNumber() == bus and dev.getDeviceAddress() == addr:
-                return (dev, conf)
+                return [(dev, conf)]
     else:
         # It's an SR part code. Look at the serial numbers.
         for dev, conf in boardlist:
             if dev.getSerialNumber() == dev_spec:
-                return (dev, conf)
+                return [(dev, conf)]
+    return []
 
 if __name__ == "__main__":
     print "Shoes"
@@ -60,13 +61,13 @@ if __name__ == "__main__":
     if args.board != None:
         device_list = filter_for_board_class(device_list, args.board)
 
-    if device_list == None or len(device_list) == 0:
+    if len(device_list) == 0:
         print >>sys.stderr, "No SR USB boards matching board-type filter"
         sys.exit(0)
 
     if args.device != None:
         device_list = filter_for_device(device_list, args.device)
 
-    if device_list == None or len(device_list) == 0:
+    if len(device_list) == 0:
         print >>sys.stderr, "No SR USB boards matching device specification"
         sys.exit(0)
