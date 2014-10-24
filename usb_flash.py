@@ -88,7 +88,7 @@ def maybe_flash_board(ctx, path, dev, conf, force):
     if board_fw_ver == file_fw_ver and force != True:
         busnum = dev.getBusNumber()
         devnum = dev.getDeviceAddress()
-        print >>sys.stderr, "Skipping device {0}:{1} with matching fw ver".format(busnum, devnum)
+        print "Skipping device {0}:{1} with matching fw ver".format(busnum, devnum)
         return
 
     # Definitely flash board. Invoke dfu-util
@@ -109,7 +109,7 @@ if __name__ == "__main__":
     device_list = discover_sr_devices(ctx, conf)
 
     if len(device_list) == 0:
-        print >>sys.stderr, "No SR USB boards attached"
+        print "No SR USB boards attached"
         sys.exit(0)
 
     # First, filter for boards if the --board option is given
@@ -117,7 +117,7 @@ if __name__ == "__main__":
         device_list = filter_for_board_class(device_list, args.board)
 
     if len(device_list) == 0:
-        print >>sys.stderr, "No SR USB boards matching board-type filter"
+        print "No SR USB boards matching board-type filter"
         sys.exit(0)
 
     # Second, if we're looking for a specific device, filter for it
@@ -125,7 +125,7 @@ if __name__ == "__main__":
         device_list = filter_for_device(device_list, args.device)
 
     if len(device_list) == 0:
-        print >>sys.stderr, "No SR USB boards matching device specification"
+        print "No SR USB boards matching device specification"
         sys.exit(0)
 
     # We're now left with a list of devices to potentially flash. Fetch a port
