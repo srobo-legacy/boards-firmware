@@ -8,7 +8,7 @@ import subprocess
 
 parser = argparse.ArgumentParser(description="SR USB board flash utility")
 parser.add_argument("conffile", help="Firmware configuration file")
-parser.add_argument("--force", help="Force flashing of attached boards")
+parser.add_argument("--force", help="Force flashing of attached boards", action="store_true")
 parser.add_argument("--board", help="Only flash one class of board")
 parser.add_argument("--device", help="Only one specific device, given by bus:addr or SR partcode")
 
