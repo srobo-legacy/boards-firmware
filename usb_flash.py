@@ -25,6 +25,9 @@ def discover_sr_devices(usb, conf):
 
     return devices
 
+def filter_for_board_class(boardlist, boardname):
+    return [(d,conf) for (d,conf) in boardlist if conf['name'] == boardname]
+
 if __name__ == "__main__":
     print "Shoes"
     args = parser.parse_args()
@@ -40,7 +43,7 @@ if __name__ == "__main__":
 
     # First, filter for boards if the --board option is given
     if args.board != None:
-        device_list = [(dev,conf) for (dev,conf) in device_list if conf['name'] == args.board]
+        device_list = filter_for_board_class(device_list, args.board)
 
     if len(device_list) == 0:
         print >>sys.stderr, "No SR USB boards matching board-type filter"
