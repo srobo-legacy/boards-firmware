@@ -98,7 +98,6 @@ def maybe_flash_board(ctx, path, dev, conf, force):
     return
 
 if __name__ == "__main__":
-    print "Shoes"
     args = parser.parse_args()
     ctx = usb1.USBContext()
     with open(args.conffile) as f:
