@@ -1,10 +1,12 @@
 power:
+  name: power
   VID: 0x1bda
   PID: 0x0010
   fw_path: ./power_noboot.bin
   fw_ver: 0
 
 servo:
+  name: servo
   VID: 0x1bda
   PID: 0x0011
   fw_path: ./servo_noboot.bin
