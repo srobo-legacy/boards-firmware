@@ -28,6 +28,21 @@ def discover_sr_devices(usb, conf):
 def filter_for_board_class(boardlist, boardname):
     return [(d,conf) for (d,conf) in boardlist if conf['name'] == boardname]
 
+def filter_for_device(boardlist, dev_spec):
+    if ':' in dev_spec:
+        # Then this is a Bus:Addr spec
+        parts = dev_spec.split(':')
+        bus = int(parts[0])
+        addr = int(parts[1])
+        for dev, conf in boardlist:
+            if dev.getBusNumber() == bus and dev.getDeviceAddress() == addr:
+                return (dev, conf)
+    else:
+        # It's an SR part code. Look at the serial numbers.
+        for dev in boardlist:
+            if dev.getSerialNumber() == dev_spec:
+                return dev
+
 if __name__ == "__main__":
     print "Shoes"
     args = parser.parse_args()
@@ -45,6 +60,13 @@ if __name__ == "__main__":
     if args.board != None:
         device_list = filter_for_board_class(device_list, args.board)
 
-    if len(device_list) == 0:
+    if device_list == None or len(device_list) == 0:
         print >>sys.stderr, "No SR USB boards matching board-type filter"
+        sys.exit(0)
+
+    if args.device != None:
+        device_list = filter_for_device(device_list, args.device)
+
+    if device_list == None or len(device_list) == 0:
+        print >>sys.stderr, "No SR USB boards matching device specification"
         sys.exit(0)
