@@ -39,9 +39,9 @@ def filter_for_device(boardlist, dev_spec):
                 return (dev, conf)
     else:
         # It's an SR part code. Look at the serial numbers.
-        for dev in boardlist:
+        for dev, conf in boardlist:
             if dev.getSerialNumber() == dev_spec:
-                return dev
+                return (dev, conf)
 
 if __name__ == "__main__":
     print "Shoes"
