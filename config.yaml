@@ -3,7 +3,7 @@ power:
   VID: 0x1bda
   PID: 0x0010
   fw_path: ./pbv4_noboot.bin
-  fw_ver: 1
+  fw_ver: 2
 
 servo:
   name: servo
