@@ -1,9 +1,13 @@
-power:
-  name: power
-  VID: 0x1bda
-  PID: 0x0010
-  fw_path: ./pbv4_noboot.bin
-  fw_ver: 0
+# SR2015 competition:  Teams have different power board
+# firmwares in their robots (to provide different current
+# limits).  We don't want to change those firmwares
+# at the competition.
+# power:
+#   name: power
+#   VID: 0x1bda
+#   PID: 0x0010
+#   fw_path: ./pbv4_noboot.bin
+#   fw_ver: 0
 
 servo:
   name: servo
